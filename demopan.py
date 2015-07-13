@@ -22,6 +22,14 @@ def process_dem(dem):
     map = d[5].split(b'\0',1)[0].decode('utf8').replace(' ', '_')
     return clean_str(client), clean_str(map)
 
+def hl2_running(proc='hl2_linux'):
+    try:
+        tf2_pid = sub.check_output(['pidof', proc])
+    except sub.CalledProcessError:
+        return False
+    return True
+
+
 if __name__ == "__main__":
     # -- Args
     ap = ArgumentParser(description='Demopan TF2 demo processor.')
@@ -49,24 +57,22 @@ if __name__ == "__main__":
 
     # -- File watcher
     watch_fd, watch_path = mkstemp(prefix='demopan')
-
     pwatch_args = [
         'inotifywait',
         '-q', '-c', '-m', 
         '-e', 'open', '-e', 'close_write',
         '-o', watch_path,
         DEM]
-
     pwatch = sub.Popen(pwatch_args, stdout=sub.PIPE)
 
+    
+    # -- Run game if not running already
     psteam_args = ['steam', 'steam://rungameid/'+str(args.gameid)]
-    psteam = sub.call(psteam_args)
-
-    watchf = os.fdopen(watch_fd, 'r')
-
-    datecount = {}
+    if not hl2_running():
+        psteam = sub.call(psteam_args)
 
     tf2_running = True
+    watchf = os.fdopen(watch_fd, 'r')
 
     while tf2_running and pwatch.returncode is None:
         where = watchf.tell()
@@ -89,13 +95,7 @@ if __name__ == "__main__":
 
             name = d.strftime('%Y%m%d-%H%M-')
             name += '-'.join([map, client])
-
-            if name in datecount:
-                datecount[name] += 1
-            else:
-                datecount[name] = 0
-
-            name += '-'+str(datecount[name])+'.dem'
+            name += '.dem'
 
             NEW_DEM = os.path.join(args.demos, name)
 
@@ -103,12 +103,9 @@ if __name__ == "__main__":
             print('Demo saved to: '+NEW_DEM)
 
         pwatch.poll()
+        tf2_running = hl2_running()
 
-        try:
-            tf2_pid = sub.check_output(['pidof', 'hl2_linux'])
-        except sub.CalledProcessError:
-            tf2_running = False
-
+    # -- End inotify process
     if not tf2_running:
         os.kill(pwatch.pid, signal.SIGTERM)
     watchf.close()
