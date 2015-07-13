@@ -36,6 +36,11 @@ if __name__ == "__main__":
         ap.print_help()
         sys.exit(1)
 
+    if not os.path.exists(args.demos):
+        print('Demo directory not found.')
+        ap.print_help()
+        sys.exit(1)
+
 
     # -- Touch demo file
     DEM = os.path.join(args.tf, 'demopan.dem')
