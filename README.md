@@ -28,14 +28,16 @@ demopan.py [--tf] [--demos] [--gameid]
   * demos: The place you want to save your demos.
   * gameid: The Steam game ID (eg. 440 for TF2)
 
-Note, this will run the game for you. You will need to bind a key to
 
-    record demopan
+Key binding
+-----------
 
-and another to
+Put this in your game's `autoexec.cfg`:
 
-    stop
+    alias panon 'echo DEMOPAN RECORDING; record demopan; alias panpan panoff'
+    alias panoff 'echo DEMOPAN STOP; stop; alias panpan panon'
+    alias panpan panon
+    bind KEY panpan
 
-in your game.
 
 Enjoy and please post any issues you have here.
