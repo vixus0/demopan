@@ -28,16 +28,22 @@ demopan.py [--tf] [--demos] [--gameid]
   * demos: The place you want to save your demos.
   * gameid: The Steam game ID (eg. 440 for TF2)
 
+Demopan will automatically run TF2 (or your game of choice) for you.
+
+When you have finished recording a demo, Demopan will save it in the demos folder as:
+
+    YYYYmmdd-HHMM-map-player.dem
+
 
 Key binding
 -----------
 
 Put this in your game's `autoexec.cfg`:
 
-    alias panon 'echo DEMOPAN RECORDING; record demopan; alias panpan panoff'
-    alias panoff 'echo DEMOPAN STOP; stop; alias panpan panon'
+    alias panon "say_team '[DEMOPAN] Get 'am, Boyos!'; record demopan; alias panpan panoff"
+    alias panoff "say_team '[DEMOPAN] End recording'; stop; alias panpan panon"
     alias panpan panon
-    bind KEY panpan
+    bind F8 panpan
 
 
-Enjoy and please post any issues you have here.
+Enjoy and please post any issues you have to [github](https://github.com/vixus0/demopan).
