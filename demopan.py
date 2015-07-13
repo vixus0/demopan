@@ -87,8 +87,8 @@ if __name__ == "__main__":
             mtime = os.path.getmtime(DEM)
             d = datetime.utcnow()
 
-            name = d.strftime('%Y-%m-%d-%H-%M-')
-            name += '-'.join([client, map])
+            name = d.strftime('%Y%m%d-%H%M-')
+            name += '-'.join([map, client])
 
             if name in datecount:
                 datecount[name] += 1
