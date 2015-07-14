@@ -14,6 +14,7 @@ setup(
     version='0.1',
     description='A cross-platform Source demo organiser',
     url='https://github.com/vixus0/demopan',
+    download_url = 'https://github.com/vixus0/demopan/tarball/0.1',
     author='vixus0',
     author_email='vixus0@gmail.com',
     license='WTFPL',
