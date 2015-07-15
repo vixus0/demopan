@@ -1,14 +1,21 @@
 #!/usr/bin/env python
 
+from __future__ import print_function
+
 import sys, os, time, signal, struct, string
 
 from argparse import ArgumentParser
 from datetime import datetime, timedelta
-from queue import Queue
 from threading import Thread
 
 from watchdog.observers import Observer
 from watchdog.events import PatternMatchingEventHandler
+
+# Python 2
+try:
+    from queue import Queue, Empty
+except ImportError:
+    from Queue import Queue, Empty
 
 def clean_str(str):
     return ''.join(filter(lambda x: x in string.printable, str))
@@ -50,6 +57,8 @@ class DemoHandler(PatternMatchingEventHandler):
     def on_modified(self, ev):
         dem = ev.src_path
 
+        print('Demo modified: '+dem)
+
         if dem in self.watchers:
             self.watchers[dem].dem_modified()
         else:
@@ -67,23 +76,17 @@ class DemoWatcher(object):
         self.thread.start()
 
     def dem_modified(self):
-        self.queue.put(1)
+        self.queue.put(datetime.utcnow())
 
     def watch(self):
         running = True
-        last = datetime.utcnow()
 
         while running:
-            now = datetime.utcnow()
-            if self.queue.empty():
-                dt = now - last
-                if dt.seconds > self.timeout:
-                    print('Assume finished: '+self.dem)
-                    running = False
-            else:
-                self.queue.get()
-                last = now
-            time.sleep(3)
+            try:
+                ping = self.queue.get(block=True, timeout=self.timeout)
+                self.queue.task_done()
+            except Empty:
+                running = False
 
         save_dem(self.dem, self.outd)
 
@@ -95,13 +98,13 @@ def main():
             'C:/Program Files/Steam/SteamApps/common'
             ]
     DEFAULT_WATCH = [os.path.join(d, 'Team Fortress 2', 'tf') for d in STEAM_DIRS]
-    ASSUME_DONE = 60 # seconds after last modify when we assume demo is done
+    ASSUME_DONE = 60.0 # seconds after last modify when we assume demo is done
 
     # -- Args
     ap = ArgumentParser(description='Demopan Source game demo processor.')
     ap.add_argument('-w', help='Directory to watch for recorded demos.', action='append', dest='watch', default=DEFAULT_WATCH)
     ap.add_argument('--demos', help='Directory to save renamed demos.', default=os.path.join(HOME, 'demos'))
-    ap.add_argument('--timeout', help='Seconds after recording has stopped to save demo.', default=ASSUME_DONE)
+    ap.add_argument('--timeout', help='Seconds after recording has stopped to save demo.', type=float, default=ASSUME_DONE)
 
     args = ap.parse_args()
 

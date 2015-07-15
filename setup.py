@@ -11,10 +11,10 @@ from os import path
 
 setup(
     name='demopan',
-    version='0.1',
+    version='0.2',
     description='A cross-platform Source demo organiser',
     url='https://github.com/vixus0/demopan',
-    download_url = 'https://github.com/vixus0/demopan/tarball/0.1',
+    download_url = 'https://github.com/vixus0/demopan/tarball/0.2',
     author='vixus0',
     author_email='vixus0@gmail.com',
     license='WTFPL',
@@ -23,6 +23,7 @@ setup(
         'Intended Audience :: End Users/Desktop',
         'Topic :: Games/Entertainment',
         'License :: Freely Distributable',
+        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.4',
     ],
     keywords='recording demo games steam',
