@@ -10,21 +10,23 @@
                    A simple cross-platform Steam demo organiser
 
 
-Requirements
+[![PyPI version](https://badge.fury.io/py/demopan.svg)](http://badge.fury.io/py/demopan)
+
+
+Easy Install
 ------------
 
-  * watchdog (https://pypi.python.org/pypi/watchdog)
-  * Python 3.4+ (https://www.python.org/downloads/mac-osx)
+  1.  Install pip for your OS: https://pip.pypa.io/en/latest/installing.html
+  2.  Open a terminal (Terminal.app in OSX).
+  3.  Install Demopan and its dependencies from PyPI: `pip install --user demopan` or `sudo pip install demopan`.
 
 
-Installation
-------------
+Manual Install
+--------------
 
-With Python 3.4 and pip installed, run:
-
-    pip install demopan
-
-This will install demopan and anything it needs.
+  1. Download and install [watchdog](https://pypi.python.org/pypi/watchdog).
+  2. Download the Demopan [package](https://github.com/vixus0/demopan/tarball/0.2)
+  4. Install with `python setup.py install` or similar.
 
 
 Usage
