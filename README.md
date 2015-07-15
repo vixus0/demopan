@@ -51,6 +51,8 @@ When you have finished recording a demo, Demopan will save it in the demos folde
 
     YYYYmmdd-HHMM-map-player.dem
 
+By default, the demos folder is `~/demos`.
+
 
 Key binding
 -----------

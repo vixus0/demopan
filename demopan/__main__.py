@@ -109,10 +109,10 @@ def main():
     args = ap.parse_args()
 
     if not os.path.exists(args.demos):
-        print('Demo save directory not found: '+args.demos+'\n')
-        ap.print_help()
-        sys.exit(1)
-
+        print('Creating demo save directory: '+args.demos+'\n')
+        os.makedirs(args.demos)
+    else:
+        print('Saving demos to: '+args.demos+'\n')
 
     # -- Watcher
     handler = DemoHandler(args.demos, args.timeout)
