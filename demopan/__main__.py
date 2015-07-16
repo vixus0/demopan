@@ -34,7 +34,7 @@ def process_dem(dem):
 
 def save_dem(dem, out_dir):
     client, map, duration = process_dem(dem)
-    d = datetime.utcnow() - timedelta(seconds=duration)
+    d = datetime.now() - timedelta(seconds=duration)
     name = '{}-{}-{}.dem'.format(d.strftime('%Y%m%d-%H%M'), map, client)
     out = os.path.join(out_dir, name)
     os.rename(dem, out)
