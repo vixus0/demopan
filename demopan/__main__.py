@@ -2,7 +2,7 @@
 
 from __future__ import print_function
 
-import sys, os, time, signal, struct, string
+import sys, os, time, signal, struct, string, shutil
 
 from argparse import ArgumentParser
 from datetime import datetime, timedelta
@@ -37,7 +37,7 @@ def save_dem(dem, out_dir):
     d = datetime.now() - timedelta(seconds=duration)
     name = '{}-{}-{}.dem'.format(d.strftime('%Y%m%d-%H%M'), map, client)
     out = os.path.join(out_dir, name)
-    os.rename(dem, out)
+    shutil.move(dem, out)
     print('Demo saved to: '+out)
 
 class DemoHandler(PatternMatchingEventHandler):
